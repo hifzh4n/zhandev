@@ -47,7 +47,7 @@ export interface ProfileCardProps {
   /** Callback when contact button is clicked */
   onContactClick?: () => void;
   /** Callback when menu (hamburger) button is clicked */
-  onMenuClick?: () => void;
+  /** (removed) */
   /** Optional decorative icon url */
   iconUrl?: string;
   /** Optional grain/background texture url */

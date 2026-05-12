@@ -88,7 +88,6 @@ const ProfileCardComponent = ({
   showHeader = true,
   contactUrl,
   onContactClick,
-  onMenuClick,
 }: ProfileCardProps): ReactElement => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -400,9 +399,7 @@ const ProfileCardComponent = ({
     onContactClick?.();
   }, [onContactClick]);
 
-  const handleMenuClick = useCallback((): void => {
-    onMenuClick?.();
-  }, [onMenuClick]);
+  // `onMenuClick` removed — menu button was removed from the UI
 
   return (
     <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>
@@ -464,19 +461,7 @@ const ProfileCardComponent = ({
                       {contactText}
                     </button>
                   )}
-                  <button
-                    type="button"
-                    className="pc-menu-btn"
-                    onClick={handleMenuClick}
-                    aria-label="Open menu"
-                    title="Menu"
-                  >
-                    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <rect x="0" y="1" width="18" height="2" rx="1" fill="white" fillOpacity="0.9" />
-                      <rect x="0" y="6" width="18" height="2" rx="1" fill="white" fillOpacity="0.9" />
-                      <rect x="0" y="11" width="18" height="2" rx="1" fill="white" fillOpacity="0.9" />
-                    </svg>
-                  </button>
+                  {/* Menu button removed per request */}
                 </div>
               )}
             </div>
