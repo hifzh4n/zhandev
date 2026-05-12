@@ -63,7 +63,9 @@ export default function ProfileAdmin() {
       setVisualCards(nextProfile.visualIdentityCards?.length ? nextProfile.visualIdentityCards : DEFAULT_VISUAL_CARDS);
       setSkills(state.skills?.length ? state.skills : DEFAULT_SKILLS);
     });
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   const readFileAsDataUrl = (file?: File) =>
@@ -243,6 +245,7 @@ export default function ProfileAdmin() {
         pillTextColor="#000000"
         ease="power3.easeOut"
         initialLoadAnimation={true}
+        onMobileMenuClick={() => {}}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-20 pt-32 lg:px-10">

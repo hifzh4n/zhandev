@@ -159,8 +159,8 @@ export default function ProjectAdmin() {
 
     const handleDeleteWithErrorHandling = async (id: string) => {
       if (confirm('Are you sure you want to delete this project?')) {
+        let previous = projectList;
         try {
-          const previous = projectList;
           const next = projectList.filter((proj) => proj.id !== id);
           // Optimistic update
           setProjectList(next);
@@ -201,7 +201,9 @@ export default function ProjectAdmin() {
       setProjectList(s.projects);
       setMiniAvatar(s.profile?.miniAvatar || s.profile?.avatar || '/avatar-placeholder.jpg');
     });
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   return (
@@ -216,6 +218,7 @@ export default function ProjectAdmin() {
         pillTextColor="#000000"
         ease="power3.easeOut"
         initialLoadAnimation={true}
+        onMobileMenuClick={() => {}}
       />
 
       <div className="pt-32 px-4 sm:px-6 lg:px-10 pb-20">

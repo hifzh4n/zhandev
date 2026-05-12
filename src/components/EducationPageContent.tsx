@@ -27,7 +27,9 @@ function useEducationStages() {
 
   useEffect(() => {
     const unsub = portfolioStore.subscribe((s) => setStages(s.education));
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   return stages;

@@ -14,7 +14,9 @@ function useProjects() {
 
   useEffect(() => {
     const unsub = portfolioStore.subscribe((s) => setData(s.projects));
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   return data;

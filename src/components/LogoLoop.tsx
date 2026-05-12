@@ -49,7 +49,7 @@ function toCssLength(value: number | string | undefined): string | undefined {
  */
 function useResizeObserver(
   callback: () => void,
-  elements: React.RefObject<HTMLElement>[],
+  elements: React.RefObject<any>[],
   dependencies: React.DependencyList
 ): void {
   useEffect(() => {
@@ -82,7 +82,7 @@ function useResizeObserver(
  * @param dependencies - Dependencies array
  */
 function useImageLoader(
-  seqRef: React.RefObject<HTMLElement>,
+  seqRef: React.RefObject<any>,
   onLoad: () => void,
   dependencies: React.DependencyList
 ): void {
@@ -101,7 +101,7 @@ function useImageLoader(
       if (remainingImages === 0) onLoad();
     };
 
-    images.forEach((img) => {
+    images.forEach((img: HTMLImageElement) => {
       if (img.complete) {
         handleImageLoad();
       } else {
@@ -111,7 +111,7 @@ function useImageLoader(
     });
 
     return () => {
-      images.forEach((img) => {
+      images.forEach((img: HTMLImageElement) => {
         img.removeEventListener('load', handleImageLoad);
         img.removeEventListener('error', handleImageLoad);
       });
@@ -130,7 +130,7 @@ function useImageLoader(
  * @param isVertical - Whether animating vertically
  */
 function useAnimationLoop(
-  trackRef: React.RefObject<HTMLDivElement>,
+  trackRef: React.RefObject<HTMLDivElement | null>,
   targetVelocity: number,
   seqWidth: number,
   seqHeight: number,
@@ -242,7 +242,7 @@ const LogoLoopComponent = ({
 
   const [seqWidth, setSeqWidth] = useState(0);
   const [seqHeight, setSeqHeight] = useState(0);
-  const [copyCount, setCopyCount] = useState(ANIMATION_CONFIG.MIN_COPIES);
+  const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
   const [isHovered, setIsHovered] = useState(false);
 
   /**

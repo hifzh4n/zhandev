@@ -36,7 +36,9 @@ function useExperienceData() {
 
   useEffect(() => {
     const unsub = portfolioStore.subscribe((s) => setData(s.experience));
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   return data;

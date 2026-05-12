@@ -133,7 +133,9 @@ export default function ExperienceAdmin() {
       setExperienceList(s.experience);
       setMiniAvatar(s.profile?.miniAvatar || s.profile?.avatar || '/avatar-placeholder.jpg');
     });
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   return (
@@ -148,6 +150,7 @@ export default function ExperienceAdmin() {
         pillTextColor="#000000"
         ease="power3.easeOut"
         initialLoadAnimation={true}
+        onMobileMenuClick={() => {}}
       />
 
       <div className="pt-32 px-4 sm:px-6 lg:px-10 pb-20">

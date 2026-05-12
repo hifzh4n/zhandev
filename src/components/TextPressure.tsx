@@ -36,7 +36,7 @@ const getAttr = (distance: number, maxDist: number, minVal: number, maxVal: numb
 };
 
 const debounce = <T extends (...args: unknown[]) => void>(func: T, delay: number) => {
-  let timeoutId: ReturnType<typeof window.setTimeout> | undefined;
+  let timeoutId: number | undefined;
   return (...args: Parameters<T>) => {
     if (timeoutId) window.clearTimeout(timeoutId);
     timeoutId = window.setTimeout(() => {

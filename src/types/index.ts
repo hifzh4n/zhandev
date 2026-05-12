@@ -48,6 +48,10 @@ export interface ProfileCardProps {
   onContactClick?: () => void;
   /** Callback when menu (hamburger) button is clicked */
   onMenuClick?: () => void;
+  /** Optional decorative icon url */
+  iconUrl?: string;
+  /** Optional grain/background texture url */
+  grainUrl?: string;
 }
 
 /**
@@ -64,6 +68,22 @@ export interface BorderGlowProps {
   borderRadius?: number;
   /** Inline styles */
   style?: React.CSSProperties;
+  /** Edge sensitivity for cursor interaction */
+  edgeSensitivity?: number;
+  /** Glow color as HSL string */
+  glowColor?: string;
+  /** Radius of glow in pixels */
+  glowRadius?: number;
+  /** Glow intensity multiplier */
+  glowIntensity?: number;
+  /** Cone spread for glow */
+  coneSpread?: number;
+  /** Whether the sweep animation is enabled */
+  animated?: boolean;
+  /** Gradient colors array */
+  colors?: string[];
+  /** Fill opacity for background */
+  fillOpacity?: number;
 }
 
 /**

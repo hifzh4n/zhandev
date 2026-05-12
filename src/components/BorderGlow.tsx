@@ -170,7 +170,7 @@ const BorderGlowComponent = ({
   glowIntensity = BORDER_GLOW.GLOW_INTENSITY,
   coneSpread = BORDER_GLOW.CONE_SPREAD,
   animated = false,
-  colors = BORDER_GLOW.GRADIENT_COLORS,
+  colors = Array.from(BORDER_GLOW.GRADIENT_COLORS),
   fillOpacity = BORDER_GLOW.FILL_OPACITY,
 }: BorderGlowProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -311,7 +311,7 @@ const BorderGlowComponent = ({
     '--cone-spread': coneSpread,
     '--fill-opacity': fillOpacity,
     ...glowVars,
-    ...buildGradientVars(colors),
+      ...buildGradientVars(Array.from(colors as any)),
   } as CSSProperties;
 
   return (

@@ -38,7 +38,7 @@ export default function LiquidEtherBackground({ className = '' }: LiquidEtherBac
   return (
     <div className={`absolute inset-0 ${className}`.trim()} aria-hidden="true">
       <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-        <LiquidEther {...liquidEtherConfig} />
+        <LiquidEther {...(liquidEtherConfig as any)} />
       </div>
     </div>
   );

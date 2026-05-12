@@ -111,7 +111,9 @@ export default function EducationAdmin() {
       setEducationList(s.education);
       setMiniAvatar(s.profile?.miniAvatar || s.profile?.avatar || '/avatar-placeholder.jpg');
     });
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   const handleCancel = () => {
@@ -136,6 +138,7 @@ export default function EducationAdmin() {
         pillTextColor="#000000"
         ease="power3.easeOut"
         initialLoadAnimation={true}
+        onMobileMenuClick={() => {}}
       />
 
       <div className="pt-32 px-4 sm:px-6 lg:px-10 pb-20">

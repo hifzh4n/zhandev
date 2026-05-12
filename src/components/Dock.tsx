@@ -202,6 +202,7 @@ interface DockProps {
   panelHeight?: number;
   dockHeight?: number;
   baseItemSize?: number;
+  ariaLabel?: string;
 }
 
 const DockComponent = ({

@@ -16,7 +16,9 @@ export default function AdminDashboard() {
       setMiniAvatar(state.profile?.miniAvatar || state.profile?.avatar || '/avatar-placeholder.jpg');
     });
 
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   const navItems = [
@@ -49,6 +51,7 @@ export default function AdminDashboard() {
         pillTextColor="#000000"
         ease="power3.easeOut"
         initialLoadAnimation={true}
+        onMobileMenuClick={() => {}}
       />
 
         <div className="min-h-screen flex flex-col">

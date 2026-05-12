@@ -14,7 +14,9 @@ export default function AchievementsPageContent() {
 
   useEffect(() => {
     const unsub = portfolioStore.subscribe((s) => setAchievements(s.achievements || []));
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   return (

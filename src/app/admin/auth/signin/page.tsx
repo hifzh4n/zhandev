@@ -57,7 +57,9 @@ export default function SignInPage() {
       setMiniAvatar(state.profile?.miniAvatar || state.profile?.avatar || '/avatar-placeholder.jpg');
     });
 
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {

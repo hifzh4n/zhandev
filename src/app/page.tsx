@@ -11,9 +11,9 @@ import TextPressureWrapper from "@/components/TextPressureWrapper";
 import SpotlightCard from "@/components/SpotlightCard";
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPostgresql, SiFigma } from 'react-icons/si';
 import portfolioStore from '@/utils/portfolioStore';
-import type { Skill } from '@/types/portfolio';
+import type { Skill, UserProfile } from '@/types/portfolio';
 
-type HomeProfile = NonNullable<ReturnType<typeof portfolioStore.getProfile>>;
+type HomeProfile = UserProfile;
 
 const fallbackSkills: Skill[] = [
   { category: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Motion'] },
@@ -31,7 +31,9 @@ export default function Home() {
       setProfile(state.profile ?? null);
       setSkills(state.skills?.length ? state.skills : fallbackSkills);
     });
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   const visualCards = profile?.visualIdentityCards?.length
@@ -80,7 +82,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20 [mask-image:radial-gradient(circle_at_center,black,transparent_80%)]" />
       <LiquidEther
         className="absolute inset-0 hidden lg:block opacity-40 xl:opacity-60"
-        colors={["#5f2cff", "#ff8edb", "#bca7ff"]}
+        colors={["#5f2cff", "#ff8edb", "#bca7ff"] as string[]}
         mouseForce={18}
         cursorSize={96}
         isViscous={false}

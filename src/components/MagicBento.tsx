@@ -461,15 +461,17 @@ const normalizeImageCards = (cards: MagicBentoCard[]) =>
     captionText: card.captionText,
   }));
 
-const useAchievementCards = () => {
+const useAchievementCards = (): MagicBentoCard[] => {
   const [cards, setCards] = useState<Achievement[]>([]);
 
   useEffect(() => {
     const unsub = portfolioStore.subscribe((s) => setCards(s.achievements));
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
-  return useMemo(
+  return useMemo<MagicBentoCard[]>(
     () =>
       (cards.length ? cards : []).map((a) => ({
         color: DEFAULT_CARD_COLOR,
@@ -481,15 +483,17 @@ const useAchievementCards = () => {
   );
 };
 
-const useProfileCards = () => {
+const useProfileCards = (): MagicBentoCard[] => {
   const [cards, setCards] = useState<VisualIdentityCard[]>([]);
 
   useEffect(() => {
     const unsub = portfolioStore.subscribe((s) => setCards(s.profile?.visualIdentityCards || []));
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
-  return useMemo(() => normalizeImageCards(cards), [cards]);
+  return useMemo<MagicBentoCard[]>(() => normalizeImageCards(cards), [cards]);
 };
 
 const MagicBento = ({
