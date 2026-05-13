@@ -41,7 +41,6 @@ const BrandHeader = ({ className = '', compact = false }: BrandHeaderProps): Rea
             priority={false}
           />
         </div>
-        <span className="text-sm font-semibold tracking-wider text-white">ZHANDEV I PORTFOLIO</span>
       </div>
     );
   }
@@ -58,7 +57,6 @@ const BrandHeader = ({ className = '', compact = false }: BrandHeaderProps): Rea
           priority={false}
         />
       </div>
-      <span className="text-base font-semibold tracking-wider text-white">ZHANDEV I PORTFOLIO</span>
     </div>
   );
 };
