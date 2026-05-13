@@ -28,7 +28,7 @@ export const NAVIGATION_ITEMS = [
 ] as const;
 
 export const SITE_CONFIG = {
-  title: 'Portfolio',
+  title: 'ZHANDEV I PORTFOLIO',
   description: 'Full-stack developer showcasing education, experience, achievements, and projects.',
   author: 'Your Name',
   url: 'https://yourportfolio.com',

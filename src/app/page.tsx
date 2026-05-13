@@ -9,6 +9,7 @@ import LogoLoop from "@/components/LogoLoop";
 import MagicBento from "@/components/MagicBento";
 import TextPressureWrapper from "@/components/TextPressureWrapper";
 import SpotlightCard from "@/components/SpotlightCard";
+import BrandHeader from "@/components/BrandHeader";
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPostgresql, SiFigma } from 'react-icons/si';
 import portfolioStore from '@/utils/portfolioStore';
 import type { Skill, UserProfile } from '@/types/portfolio';
@@ -101,6 +102,11 @@ export default function Home() {
       />
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col px-4 py-4 pb-24 sm:px-6 sm:py-6 sm:pb-28 lg:px-10 lg:py-8 lg:pb-32">
+
+        {/* Brand Header */}
+        <div className="mb-12 fade-in-up">
+          <BrandHeader className="justify-start" />
+        </div>
 
         <section id="education" className="py-6 lg:py-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_340px] lg:items-start grid-cols-1">
