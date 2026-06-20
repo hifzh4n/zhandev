@@ -78,6 +78,31 @@ export const storageService = {
     return data.publicUrl;
   },
 
+  async uploadEducationLogo(file: File, educationId: string, previousUrl?: string | null): Promise<string> {
+    await requireAuthenticatedUser();
+    const fileName = `${educationId}/${Date.now()}_${file.name}`;
+
+    const previousPath = getStorageObjectPath('education-logos', previousUrl);
+    if (previousPath) {
+      await this.deleteImage('education-logos', previousPath);
+    }
+
+    const { error } = await supabase.storage
+      .from('education-logos')
+      .upload(fileName, file, { upsert: false });
+
+    if (error) {
+      console.error('Upload error:', error);
+      throw new Error(`Failed to upload logo: ${error.message}`);
+    }
+
+    const { data } = supabase.storage
+      .from('education-logos')
+      .getPublicUrl(fileName);
+
+    return data.publicUrl;
+  },
+
   async uploadProfileImage(file: File, previousUrl?: string | null): Promise<string> {
     await requireAuthenticatedUser();
     const fileName = `profile/${Date.now()}_${file.name}`;

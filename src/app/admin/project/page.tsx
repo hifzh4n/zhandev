@@ -64,6 +64,7 @@ export default function ProjectAdmin() {
     { label: 'Experience', href: '/admin/experience' },
     { label: 'Achievement', href: '/admin/achievement' },
     { label: 'Project', href: '/admin/project' },
+    { label: 'Social', href: '/admin/social' },
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -159,7 +160,7 @@ export default function ProjectAdmin() {
 
     const handleDeleteWithErrorHandling = async (id: string) => {
       if (confirm('Are you sure you want to delete this project?')) {
-        let previous = projectList;
+        const previous = projectList;
         try {
           const next = projectList.filter((proj) => proj.id !== id);
           // Optimistic update

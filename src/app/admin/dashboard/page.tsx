@@ -27,6 +27,7 @@ export default function AdminDashboard() {
     { label: 'Experience', href: '/admin/experience' },
     { label: 'Achievement', href: '/admin/achievement' },
     { label: 'Project', href: '/admin/project' },
+    { label: 'Social', href: '/admin/social' },
   ];
 
   const handleLogout = () => {
@@ -59,12 +60,13 @@ export default function AdminDashboard() {
         <div className="flex-1 px-4 sm:px-6 lg:px-10 pb-20 pt-24">
           <div className="max-w-7xl mx-auto">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
               {[
                 { title: 'Education Entries', value: '2', change: '+1 this month' },
                 { title: 'Experience Entries', value: '3', change: '+0 this month' },
                 { title: 'Projects', value: '2', change: '+1 this month' },
                 { title: 'Achievements', value: '2', change: '+0 this month' },
+                { title: 'Social Accounts', value: '5', change: 'Landing page links' },
               ].map((stat, i) => (
                 <div
                   key={i}
@@ -91,6 +93,7 @@ export default function AdminDashboard() {
                     { action: 'Work Experience', details: '3 entries' },
                     { action: 'Projects', details: '2 projects' },
                     { action: 'Achievements', details: '2 achievements' },
+                    { action: 'Social Accounts', details: 'WhatsApp, Facebook, Instagram, Threads, TikTok' },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/10 transition-colors duration-200">
                       <span className="text-white/80">{item.action}</span>
@@ -112,6 +115,9 @@ export default function AdminDashboard() {
                   </a>
                   <a href="/admin/project" className="block w-full px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition-all duration-200 text-center">
                     Edit Projects
+                  </a>
+                  <a href="/admin/social" className="block w-full px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition-all duration-200 text-center">
+                    Edit Social Accounts
                   </a>
                   <Button
                     onClick={handleLogout}

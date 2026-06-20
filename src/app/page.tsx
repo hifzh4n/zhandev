@@ -7,12 +7,12 @@ import DockNav from "@/components/DockNav";
 import ProfileCard from "@/components/ProfileCard";
 import LogoLoop from "@/components/LogoLoop";
 import MagicBento from "@/components/MagicBento";
-import TextPressureWrapper from "@/components/TextPressureWrapper";
+import GlitchText from "@/components/GlitchText";
 import SpotlightCard from "@/components/SpotlightCard";
-import BrandHeader from "@/components/BrandHeader";
+import { FaFacebookF, FaInstagram, FaThreads, FaTiktok, FaWhatsapp } from 'react-icons/fa6';
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPostgresql, SiFigma } from 'react-icons/si';
 import portfolioStore from '@/utils/portfolioStore';
-import type { Skill, UserProfile } from '@/types/portfolio';
+import type { Skill, SocialLink, SocialPlatform, UserProfile } from '@/types/portfolio';
 
 type HomeProfile = UserProfile;
 
@@ -23,14 +23,32 @@ const fallbackSkills: Skill[] = [
   { category: '3D & Graphics', items: ['three.js', 'WebGL', 'GLSL', 'Canvas', 'SVG'] },
 ];
 
+const defaultSocialLinks: SocialLink[] = [
+  { platform: 'whatsapp', label: 'WhatsApp', url: 'https://wa.me/60123456789', enabled: true },
+  { platform: 'facebook', label: 'Facebook', url: 'https://facebook.com/your-profile', enabled: true },
+  { platform: 'instagram', label: 'Instagram', url: 'https://instagram.com/your-profile', enabled: true },
+  { platform: 'threads', label: 'Threads', url: 'https://threads.net/@your-profile', enabled: true },
+  { platform: 'tiktok', label: 'TikTok', url: 'https://tiktok.com/@your-profile', enabled: true },
+];
+
+const socialIcons: Record<SocialPlatform, typeof FaWhatsapp> = {
+  whatsapp: FaWhatsapp,
+  facebook: FaFacebookF,
+  instagram: FaInstagram,
+  threads: FaThreads,
+  tiktok: FaTiktok,
+};
+
 export default function Home() {
   const [profile, setProfile] = useState<HomeProfile | null>(null);
   const [skills, setSkills] = useState<Skill[]>(fallbackSkills);
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>(defaultSocialLinks);
 
   useEffect(() => {
     const unsub = portfolioStore.subscribe((state) => {
       setProfile(state.profile ?? null);
       setSkills(state.skills?.length ? state.skills : fallbackSkills);
+      setSocialLinks(state.socialLinks?.length ? state.socialLinks : defaultSocialLinks);
     });
     return () => {
       unsub();
@@ -103,18 +121,15 @@ export default function Home() {
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col px-4 py-4 pb-24 sm:px-6 sm:py-6 sm:pb-28 lg:px-10 lg:py-8 lg:pb-32">
 
-        {/* Brand Header */}
-        <div className="mb-12 fade-in-up">
-          <BrandHeader className="justify-start" />
-        </div>
-
         <section id="education" className="py-6 lg:py-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_340px] lg:items-start grid-cols-1">
             <div className="space-y-12 w-full max-w-2xl mx-auto lg:mx-0 lg:max-w-none">
               {/* Greeting / Hook */}
               <div className="space-y-4 fade-in-up fade-in-up-1">
                 <p className="text-xs uppercase tracking-[0.34em] text-white/45">HELLO, I'M HIFZHAN FAUZI</p>
-                <TextPressureWrapper text={"Full-Stack Developer &\nCreative Technologies"} />
+                <GlitchText speed={1} enableShadows enableOnHover={false}>
+                  {"Full-Stack Developer &\nCreative Technologies"}
+                </GlitchText>
               </div>
 
               {/* Now Section */}
@@ -142,6 +157,27 @@ export default function Home() {
                   <p>
                     When I'm not coding, I'm exploring creative tools, contributing to open-source projects, or experimenting with new interaction patterns. I believe great digital products are built at the intersection of thoughtful design and solid engineering.
                   </p>
+                </div>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <span className="text-xs font-semibold uppercase tracking-[0.28em] text-white/45">Connect</span>
+                  <div className="flex flex-wrap gap-2">
+                    {socialLinks.filter((social) => social.enabled && social.url).map(({ platform, label, url }) => {
+                      const Icon = socialIcons[platform];
+                      return (
+                      <a
+                        key={label}
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={label}
+                        title={label}
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/75 transition hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/15 hover:text-white"
+                      >
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      </a>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { supabase } from './supabase';
-import type { Project, Experience, Education, Achievement, UserProfile, VisualIdentityCard, Skill } from '@/types/portfolio';
+import type { Project, Experience, Education, Achievement, UserProfile, VisualIdentityCard, Skill, SocialLink } from '@/types/portfolio';
 
 export type PortfolioState = {
   projects: Project[];
@@ -9,6 +9,7 @@ export type PortfolioState = {
   education: Education[];
   achievements: Achievement[];
   skills: Skill[];
+  socialLinks: SocialLink[];
   profile?: UserProfile;
 };
 
@@ -19,6 +20,7 @@ let cache: PortfolioState = {
   education: [],
   achievements: [],
   skills: [],
+  socialLinks: [],
   profile: undefined,
 };
 
@@ -98,6 +100,7 @@ async function fetchEducation(): Promise<Education[]> {
     title: e.title,
     school: e.school,
     details: e.details,
+    logoUrl: e.logo_url,
   }));
 }
 
@@ -134,6 +137,25 @@ async function fetchSkills(): Promise<Skill[]> {
   return (data || []).map((s: any) => ({
     category: s.category,
     items: s.items || [],
+  }));
+}
+
+async function fetchSocialLinks(): Promise<SocialLink[]> {
+  const { data, error } = await supabase
+    .from('social_links')
+    .select('*')
+    .order('display_order', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching social links:', error);
+    return [];
+  }
+
+  return (data || []).map((s: any) => ({
+    platform: s.platform,
+    label: s.label,
+    url: s.url,
+    enabled: s.enabled ?? true,
   }));
 }
 
@@ -174,12 +196,13 @@ async function fetchProfile(): Promise<UserProfile | undefined> {
 
 // Sync all data
 async function syncAllData() {
-  const [projects, experience, education, achievements, skills, profile] = await Promise.all([
+  const [projects, experience, education, achievements, skills, socialLinks, profile] = await Promise.all([
     fetchProjects(),
     fetchExperience(),
     fetchEducation(),
     fetchAchievements(),
     fetchSkills(),
+    fetchSocialLinks(),
     fetchProfile(),
   ]);
 
@@ -189,6 +212,7 @@ async function syncAllData() {
     education,
     achievements,
     skills,
+    socialLinks,
     profile,
   };
 
@@ -349,6 +373,7 @@ const portfolioStore = {
             title: edu.title,
             school: edu.school,
             details: edu.details,
+            logo_url: edu.logoUrl,
             display_order: i,
           },
         ]);
@@ -440,6 +465,44 @@ const portfolioStore = {
       await syncAllData();
     } catch (error) {
       console.error('Error in setSkills:', error);
+      throw error;
+    }
+  },
+
+  // Social Links
+  async getSocialLinks(): Promise<SocialLink[]> {
+    return fetchSocialLinks();
+  },
+
+  async setSocialLinks(list: SocialLink[]) {
+    try {
+      const { error: deleteError } = await supabase.from('social_links').delete().neq('id', 0);
+      if (deleteError) {
+        console.error('Error deleting social links:', deleteError);
+        throw new Error(`Failed to delete social links: ${deleteError.message}`);
+      }
+
+      for (let i = 0; i < list.length; i++) {
+        const social = list[i];
+        const { error } = await supabase.from('social_links').insert([
+          {
+            platform: social.platform,
+            label: social.label,
+            url: social.url,
+            enabled: social.enabled,
+            display_order: i,
+          },
+        ]);
+
+        if (error) {
+          console.error('Error inserting social link:', error);
+          throw new Error(`Failed to insert social link: ${error.message}`);
+        }
+      }
+
+      await syncAllData();
+    } catch (error) {
+      console.error('Error in setSocialLinks:', error);
       throw error;
     }
   },

@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PillNav from '@/components/PillNav';
 import { Education } from '@/types/portfolio';
-import { Trash2, Edit2, Plus } from 'lucide-react';
+import { Trash2, Edit2, Plus, ImageIcon, X } from 'lucide-react';
 import portfolioStore from '@/utils/portfolioStore';
+import { storageService } from '@/utils/storage';
 import { Button } from '@/components/ui/button';
 
 const INITIAL_EDUCATION: Education[] = [
@@ -14,12 +15,14 @@ const INITIAL_EDUCATION: Education[] = [
     title: 'Information Technology',
     school: 'Universiti Teknologi PETRONAS',
     details: 'Bachelor of Science in Information Technology with specialization in Software Engineering',
+    logoUrl: '',
   },
   {
     year: '2018 - 2019',
     title: 'Diploma in Information Technology',
     school: 'Kolej Profesional MARA Kuching',
     details: 'Diploma in Information Technology with focus on Web Development and Database Management',
+    logoUrl: '',
   },
 ];
 
@@ -33,9 +36,11 @@ export default function EducationAdmin() {
     title: '',
     school: '',
     details: '',
+    logoUrl: '',
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [logoPreview, setLogoPreview] = useState('');
 
   const navItems = [
     { label: 'Dashboard', href: '/admin/dashboard' },
@@ -43,6 +48,7 @@ export default function EducationAdmin() {
     { label: 'Experience', href: '/admin/experience' },
     { label: 'Achievement', href: '/admin/achievement' },
     { label: 'Project', href: '/admin/project' },
+    { label: 'Social', href: '/admin/social' },
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -77,7 +83,8 @@ export default function EducationAdmin() {
         setMessage({ type: 'success', text: 'Education entry added successfully!' });
       }
 
-      setFormData({ year: '', title: '', school: '', details: '' });
+      setFormData({ year: '', title: '', school: '', details: '', logoUrl: '' });
+      setLogoPreview('');
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
       console.error('Error saving education:', error);
@@ -87,7 +94,43 @@ export default function EducationAdmin() {
 
   const handleEdit = (index: number) => {
     setFormData(educationList[index]);
+    setLogoPreview(educationList[index].logoUrl || '');
     setEditingId(index.toString());
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+
+      const educationId = editingId || `education-${Date.now()}`;
+      const logoUrl = await storageService.uploadEducationLogo(file, educationId, formData.logoUrl || logoPreview || null);
+
+      setFormData((prev) => ({
+        ...prev,
+        logoUrl,
+      }));
+      setLogoPreview(logoUrl);
+      setMessage({ type: 'success', text: 'Logo uploaded successfully!' });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      console.error('Logo upload failed:', error);
+      setMessage({ type: 'error', text: `Error: ${error instanceof Error ? error.message : 'Logo upload failed'}` });
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    setFormData((prev) => ({
+      ...prev,
+      logoUrl: '',
+    }));
+    setLogoPreview('');
   };
 
   const handleDelete = async (index: number) => {
@@ -122,7 +165,9 @@ export default function EducationAdmin() {
       title: '',
       school: '',
       details: '',
+      logoUrl: '',
     });
+    setLogoPreview('');
     setEditingId(null);
   };
 
@@ -194,6 +239,34 @@ export default function EducationAdmin() {
                 className="w-full px-4 py-3 rounded-lg bg-white/30 border border-white/30 text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors resize-none"
               />
 
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/90">
+                    {logoPreview || formData.logoUrl ? (
+                      <img src={logoPreview || formData.logoUrl} alt="Education logo preview" className="h-full w-full object-cover" />
+                    ) : (
+                      <ImageIcon className="h-8 w-8 text-black/40" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-sm font-semibold text-white/80">Education logo</label>
+                    <p className="mt-1 text-xs text-white/45">Upload a square or transparent PNG/SVG-style logo for the school or university.</p>
+                    <div className="mt-3 flex flex-wrap gap-3">
+                      <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20">
+                        Upload logo
+                        <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                      </label>
+                      {(logoPreview || formData.logoUrl) && (
+                        <Button type="button" variant="outline" onClick={handleRemoveLogo}>
+                          <X size={16} />
+                          Remove
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex gap-3 pt-4">
                 <Button type="submit" variant="cool" className="flex-1 justify-center">
                   <Plus size={18} />
@@ -226,8 +299,15 @@ export default function EducationAdmin() {
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
+                          {education.logoUrl && (
+                            <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-white/90">
+                              <img src={education.logoUrl} alt={`${education.school} logo`} className="h-full w-full object-cover" />
+                            </div>
+                          )}
+                          <div>
                           <span className="text-sm font-semibold text-cyan-400">{education.year}</span>
                           <h3 className="text-xl font-bold">{education.title}</h3>
+                          </div>
                         </div>
                         <p className="text-white/70 mb-3">{education.school}</p>
                         <p className="text-white/60">{education.details}</p>

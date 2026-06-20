@@ -8,14 +8,21 @@ import type { Education } from '@/types/portfolio';
 import LiquidEtherBackground from '@/components/LiquidEtherBackground';
 import portfolioStore from '@/utils/portfolioStore';
 
-function EducationStage({ year, title, school, details }: Education) {
+function EducationStage({ year, title, school, details, logoUrl }: Education) {
   return (
     <SpotlightCard className="rounded-3xl bg-white/[0.05]" spotlightColor="rgba(255, 255, 255, 0.18)">
-      <article>
-        <p className="text-xs uppercase tracking-[0.35em] text-white/40">{year}</p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">{title}</h2>
-        <p className="mt-2 text-sm uppercase tracking-[0.24em] text-cyan-300/90">{school}</p>
+      <article className="flex gap-4">
+        {logoUrl && (
+          <div className="h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-white/90">
+            <img src={logoUrl} alt={`${school} logo`} className="h-full w-full object-cover" />
+          </div>
+        )}
+        <div className="min-w-0">
+          <p className="text-xs uppercase tracking-[0.35em] text-white/40">{year}</p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">{title}</h2>
+          <p className="mt-2 text-sm uppercase tracking-[0.24em] text-cyan-300/90">{school}</p>
         <p className="mt-4 text-sm leading-7 text-white/72">{details}</p>
+        </div>
       </article>
     </SpotlightCard>
   );
@@ -80,11 +87,11 @@ export default function EducationPageContent() {
                     <div className="flex justify-center">
                       <div className="h-3.5 w-3.5 rounded-full border-4 border-cyan-300 bg-cyan-300/20" aria-hidden="true" />
                     </div>
-                    <EducationStage year={stage.year} title={stage.title} school={stage.school} details={stage.details} />
+                    <EducationStage year={stage.year} title={stage.title} school={stage.school} details={stage.details} logoUrl={stage.logoUrl} />
                   </>
                 ) : (
                   <>
-                    <EducationStage year={stage.year} title={stage.title} school={stage.school} details={stage.details} />
+                    <EducationStage year={stage.year} title={stage.title} school={stage.school} details={stage.details} logoUrl={stage.logoUrl} />
                     <div className="flex justify-center">
                       <div className="h-3.5 w-3.5 rounded-full border-4 border-cyan-300 bg-cyan-300/20" aria-hidden="true" />
                     </div>

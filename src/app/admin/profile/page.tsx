@@ -50,6 +50,7 @@ export default function ProfileAdmin() {
     { label: 'Experience', href: '/admin/experience' },
     { label: 'Achievement', href: '/admin/achievement' },
     { label: 'Project', href: '/admin/project' },
+    { label: 'Social', href: '/admin/social' },
     { label: 'Profile', href: '/admin/profile' },
   ];
 

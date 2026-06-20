@@ -24,6 +24,7 @@ export type Education = {
   title: string;
   school: string;
   details: string;
+  logoUrl?: string;
 };
 
 export type Achievement = {
@@ -36,6 +37,15 @@ export type Achievement = {
 export type Skill = {
   category: string;
   items: string[];
+};
+
+export type SocialPlatform = 'whatsapp' | 'facebook' | 'instagram' | 'threads' | 'tiktok';
+
+export type SocialLink = {
+  platform: SocialPlatform;
+  label: string;
+  url: string;
+  enabled: boolean;
 };
 
 export type UserProfile = {

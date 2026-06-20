@@ -77,7 +77,6 @@ export default function TextPressure({
 
   const lines = useMemo(() => text.split('\n'), [text]);
   const longestLineLength = useMemo(() => Math.max(...lines.map((line) => line.length), 1), [lines]);
-  const chars = useMemo(() => lines.flatMap((line) => line.split('')), [lines]);
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {

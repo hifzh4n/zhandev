@@ -44,6 +44,7 @@ export default function AchievementAdmin() {
     { label: 'Experience', href: '/admin/experience' },
     { label: 'Achievement', href: '/admin/achievement' },
     { label: 'Project', href: '/admin/project' },
+    { label: 'Social', href: '/admin/social' },
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
